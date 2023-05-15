@@ -38,10 +38,9 @@ function chooseAction() {
         } else {
         employeeView(response);
    
-        }
-    })
+        }})
 };
-//Switches depending on Chosen response
+//Switches between functions depending on Chosen response
 const employeeView = async (response) => {
     switch(response.action) {
         case "View All Employees":
@@ -64,13 +63,12 @@ const employeeView = async (response) => {
             return;
     }
 };
-// const that select the database selections from the mysql files
+// Function to make database selections from the mysql files
 const viewDepartments = function(){
     db.query('SELECT * FROM department', function (err, results) {
         console.table("Departments", results)
         chooseAction()
-    })
-}
+    })}
 
 const viewEmployees = function(){
     db.query('SELECT * FROM employee', function (err, results) {
@@ -83,11 +81,9 @@ const viewRoles = function(){
     db.query("SELECT * FROM role", function (err, results) {
         console.table("Roles", results)
         chooseAction();
-    })
-}
+    })}
 
 const addEmployee = async function(){
-    
     await promptName();
 }
 
@@ -155,12 +151,10 @@ const promptName = function(){
             })
         })})
     })};
-
-
- //Function to update Employees Role
+//Inquirer Function to Update Employee Role
  const updateRole = function(){
     var roles ={};
-db.query(`SELECT * FROM role`, (err, res) => {
+    db.query(`SELECT * FROM role`, (err, res) => {
             if (err) {
                 console.log(err)
                 return
@@ -169,8 +163,8 @@ db.query(`SELECT * FROM role`, (err, res) => {
                 name: `${role.role_title}`,
                 value: role,
             }))
-    })
-db.query('SELECT * FROM employee', (err, results) => {
+        })
+    db.query('SELECT * FROM employee', (err, results) => {
 
         if (err) {
           console.log(err);
@@ -182,9 +176,7 @@ const choices = results.map((employee) => ({
     name: `${employee.first_name} ${employee.last_name}`,
     value: employee,
     }));
-
-       
-    
+   
 // Prompt the user to select an employee from the list
 inquirer
     .prompt({
@@ -193,39 +185,37 @@ inquirer
         message: 'Select an employee to update:',
         choices,
         })
-          .then((resp) => {
-            const employee = resp.employee;
+    .then((resp) => {
+        const employee = resp.employee;
     
-            // Prompt the user to update the employee data
-            inquirer
-              .prompt([
-                {
-                  type: 'list',
-                  name: 'roleId',
-                  message: `What is the role id for the new employee?`,
-                  choices: roles
-                },
-              ])
-              .then((resp) => {
-                const chosenRole = resp.roleId
+// Prompt the user to update the employee data
+inquirer
+    .prompt([
+        {
+        type: 'list',
+        name: 'roleId',
+        message: `What is the role id for the new employee?`,
+        choices: roles
+        },
+            ])
+    .then((resp) => {
+        const chosenRole = resp.roleId
                 
-                // Update the employee data in the database
-                db.query(
-                  `UPDATE employee SET role_id = ${chosenRole.role_id} WHERE employee_id = ${employee.employee_id}`,
-                  (err, results) => {
-                    if (err) {
-                      console.log('Error updating employee in database:', err);
-                      return;
+// Update the employee data in the database
+    db.query(
+        `UPDATE employee SET role_id = ${chosenRole.role_id} WHERE employee_id = ${employee.employee_id}`,
+            (err, results) => {
+            if (err) {
+            console.log('Error updating employee in database:', err);
+            return;
                     }
-    
-                    console.log(`Role updated for ${employee.first_name} ${employee.last_name}`);
-                    chooseAction();
-                  }
-                )
-              })
+            console.log(`Role updated for ${employee.first_name} ${employee.last_name}`);
+                chooseAction();
+                  })
+            })
           })
       })};
-
+// Inquirer Prompt for adding a New Department
 const addDepartment = function(){
     inquirer.prompt([{
         type: 'input',
@@ -235,11 +225,11 @@ const addDepartment = function(){
     (resp) => {
         db.query(`INSERT INTO department (dept_name) VALUES ("${resp.deptName}")`, (err, results) => {
             if (err){
-                console.log(err)
-                return
+            console.log(err)
+            return
             }
             console.log(`${resp.deptName} added to database`)
-            chooseAction();
+        chooseAction();
         })
     })};
 
@@ -249,7 +239,7 @@ const addRole = function(){
           console.log(err);
           return;
         }
-        // Map Department data to an array of choices for Prompt
+// Map Department data to an array of choices for Prompt
         const departments = results.map((dept) => ({
           name: `${dept.dept_name}`,
           value: dept,
