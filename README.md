@@ -17,6 +17,8 @@ To use download the files and install the node module dependencies - npm i
 
 [GitHubRepository](https://github.com/AJoelj84/EmployeeTracker)
 
+[VideoDemo](https://drive.google.com/file/d/1tfDgjPtxHaKNMjpQ_QgkEQBtRP6KZkp0/view)
+
 # Contact
 
 [Email](ajoelj84@gmail.com)
