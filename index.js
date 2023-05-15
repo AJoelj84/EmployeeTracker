@@ -9,7 +9,7 @@ const db = mysql.createConnection(
     password: '1234',
     database: 'company_db'
     },
-console.log(`Connected to the company_db database.`)
+console.log(`Connected to the Employee database.`)
   );
 
 //Prompt for Action to be taken
@@ -48,7 +48,7 @@ const employeeView = async (response) => {
         case "Add Employee":
             return addEmployee()
         case "Update Employee Role":
-            console.log("updated employee role chosen");
+            console.log("New Employee Role Chosen");
             return updateRole()
         case "View All Roles":
             return viewRoles();
@@ -59,7 +59,7 @@ const employeeView = async (response) => {
         case "Add Department":
             return addDepartment();
         case "Quit":
-            console.log("Quitting");
+            console.log("Exiting Application");
             return;
     }
 };
@@ -182,7 +182,7 @@ inquirer
     .prompt({
         type: 'list',
         name: 'employee',
-        message: 'Select an employee to update:',
+        message: 'Select an Employee to Update:',
         choices,
         })
     .then((resp) => {
@@ -194,7 +194,7 @@ inquirer
         {
         type: 'list',
         name: 'roleId',
-        message: `What is the role id for the new employee?`,
+        message: `What is the Role ID for the New Employee?`,
         choices: roles
         },
             ])
@@ -206,7 +206,7 @@ inquirer
         `UPDATE employee SET role_id = ${chosenRole.role_id} WHERE employee_id = ${employee.employee_id}`,
             (err, results) => {
             if (err) {
-            console.log('Error updating employee in database:', err);
+            console.log('Error updating Employee in database:', err);
             return;
                     }
             console.log(`Role updated for ${employee.first_name} ${employee.last_name}`);
@@ -220,7 +220,7 @@ const addDepartment = function(){
     inquirer.prompt([{
         type: 'input',
         name:'deptName',
-        message: 'What is the name of the new department?'}
+        message: 'What is the Name for the New Department?'}
     ]).then(
     (resp) => {
         db.query(`INSERT INTO department (dept_name) VALUES ("${resp.deptName}")`, (err, results) => {
@@ -248,16 +248,16 @@ const addRole = function(){
     inquirer.prompt([{
         type: 'input',
         name:'roleTitle',
-        message: 'What is the name of the new role?'},
+        message: 'What is the Name of the New Role?'},
     {
         type: 'input',
         name: 'salary',
-        message: 'What is the salary of the new role?'
+        message: 'What is the New Roles Salary?'
     },
     {
         type: 'list',
         name: 'departmentId',
-        message: 'What department does the new role belong to?',
+        message: 'What Department does the New Role fall Under?',
         choices: departments
     }
     ]).then(
